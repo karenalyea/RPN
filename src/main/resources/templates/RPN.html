@@ -21,12 +21,7 @@
 				<button>Enter</button>
 			</div>
 		</form>
-		<div>
-			<form method="post" action="/abs">
-			<button>Abs</button>
-			</form>
-		</div>
-	
+			
 		{{#hasTwoOrMoreNumbers}}
 		<div>
 			<form method="post" action="/add">
@@ -40,7 +35,35 @@
 			</form>
 		</div>
 
+		<div>
+			<form method="post" action="/multiply">
+			<button>x</button>
+			</form>
+		</div>
+		
+		<div>
+			<form method="post" action="/divide">
+			<button>/</button>
+			</form>
+		</div>
+		
+		<div>
+			<form method="post" action="/exponent">
+			<button>^</button>
+			</form>
+		</div>
+		
 		{{/hasTwoOrMoreNumbers}}
+		<br>
+		{{#hasOneOrMoreNumbers}}
+		<div>
+			<form method="post" action="/abs">
+			<button>Abs</button>
+			</form>
+		</div>
+		{{/hasOneOrMoreNumbers}}
+		<br>
+		
 		{{#hasUndoer}}
 		<div>
 			<form method="post" action="/undo">
