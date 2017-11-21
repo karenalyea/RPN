@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8">
+<title>RPN Calculator</title>
+<link rel="stylesheet" href="RPNCalc.css" />
+</head>
+<body>
+	<h2>Here is a Reverse Polish Notation Calculator</h2>
+	
+	<div class="FormHolder">
+		<form method="post" action="/enter">
+			<div class="form-input">
+				<input type="number"
+					   autofocus
+					   step="any"
+					   required
+					   name="value">
+			</div>
+			<div class="FormActions">
+				<button>Enter</button>
+			</div>
+		</form>
+		<div>
+			<form method="post" action="/abs">
+			<button>Abs</button>
+			</form>
+		</div>
+	
+		{{#hasTwoOrMoreNumbers}}
+		<div>
+			<form method="post" action="/add">
+			<button>+</button>
+			</form>
+		</div>
+	
+		<div>
+			<form method="post" action="/minus">
+			<button>-</button>
+			</form>
+		</div>
+
+		{{/hasTwoOrMoreNumbers}}
+		{{#hasUndoer}}
+		<div>
+			<form method="post" action="/undo">
+				<button>Undo</button>
+			</form>
+		</div>
+		{{/hasUndoer}}
+	</div>
+
+	<div class="StackHolder">
+		<h1 class="StackTitle">Stack</h1>
+		<ol class="stack">
+			{{#stack}}
+		<!-- since we are just using a plain number, we can use . -->
+				<li>{{ . }}</li>
+			{{/stack}}
+		</ol>
+
+	</div>
+</body>
+</html>
