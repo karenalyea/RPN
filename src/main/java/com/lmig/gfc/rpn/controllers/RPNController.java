@@ -7,25 +7,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lmig.gfc.rpn.models.AbsoluterOfOneNumber;
 import com.lmig.gfc.rpn.models.AddNumbers;
 import com.lmig.gfc.rpn.models.DivideNumbers;
 import com.lmig.gfc.rpn.models.ExponentNumbers;
+import com.lmig.gfc.rpn.models.Godoer;
 import com.lmig.gfc.rpn.models.MinusNumbers;
 import com.lmig.gfc.rpn.models.MultiplyNumbers;
-import com.lmig.gfc.rpn.models.PushUndoer;
-import com.lmig.gfc.rpn.models.TwoNumberCalculation;
-import com.lmig.gfc.rpn.models.Undoer;
-import com.lmig.gfc.rpn.models.oneArgumentUndoer;
+import com.lmig.gfc.rpn.models.ItDoesThePushing;
+
+
 
 @Controller
 public class RPNController {
 	
 	private Stack<Double> stack;
-	private Stack<Undoer> undoers;
+	private Stack<Godoer> undoers;
+	private Stack<Godoer> redoers;
 	
 	public RPNController() { 
 		stack = new Stack<Double>();
-		undoers = new Stack<Undoer>();
+		undoers = new Stack<Godoer>();
+		redoers = new Stack<Godoer>();
 	}
 
 	@GetMapping("/")
@@ -36,6 +39,7 @@ public class RPNController {
 		mv.addObject("hasOneOrMoreNumbers", stack.size() >=1);
 		mv.addObject("hasTwoOrMoreNumbers",stack.size() >=2);
 		mv.addObject("hasUndoer", undoers.size() > 0);
+		mv.addObject("hasRedoer", redoers.size() > 0);
 		mv.setViewName("RPN");
 		return mv;
 	}
@@ -43,13 +47,9 @@ public class RPNController {
 	@PostMapping("/enter")
 	public ModelAndView pushNumberOntoStack(double value) {
 	//double value does not allow for null 
-		stack.push(value);
-		undoers.push(new PushUndoer());
-	
-		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/");
-		return mv; 
+		ItDoesThePushing pusher = new ItDoesThePushing(stack, value);
+		return doOperation(pusher);
+		 
 	}
 
 	@PostMapping("/add")
@@ -84,34 +84,41 @@ public class RPNController {
 		
 	}
 	@PostMapping("/abs")
-	public ModelAndView abs() {
-		double value = stack.pop();
-		undoers.push(new oneArgumentUndoer(value));
-	//	double result = Math.abs(value);
-	//	if (value < 0) {
-			value = -1 * value; 
-			stack.push(value);
-			
-	//	}
-				
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/");
-		return mv;
+	public ModelAndView absoluteValue() {
+		AbsoluterOfOneNumber absoluter = new AbsoluterOfOneNumber(stack);
+		return doOperation(absoluter);
+		
 	}
 	
 	@PostMapping("/undo")
 	public ModelAndView undo() {
-		Undoer undoer = undoers.pop();
+		Godoer undoer = undoers.pop();
 		undoer.undo(stack);
+		redoers.push(undoer);
 				
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/");
 		return mv;
 	}
 	
-	private ModelAndView doOperation(TwoNumberCalculation calcy) {
+	@PostMapping("/redo")
+	public ModelAndView redo() {
+		Godoer godoer = redoers.pop();
+		godoer.goDoIt();
+		undoers.push(godoer);
+				
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	
+		
+	private ModelAndView doOperation(Godoer calcy) {
+		//does both doer and and undoer
+		//calcy know what function it is suppose to do
 		calcy.goDoIt();
 		undoers.push(calcy);
+		redoers.clear();
 		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/");

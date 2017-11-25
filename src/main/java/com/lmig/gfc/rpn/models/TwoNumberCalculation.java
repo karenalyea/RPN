@@ -2,7 +2,7 @@ package com.lmig.gfc.rpn.models;
 
 import java.util.Stack;
 
-public abstract class TwoNumberCalculation implements Undoer {
+public abstract class TwoNumberCalculation implements Godoer, Undoer {
 // abstract - know process but doesn't have enough info to do anything
 	//removes ability to call new.  have to call new on one of the kids
 	
