@@ -53,14 +53,34 @@
 			</form>
 		</div>
 		
+		<div>
+			<form method="post" action="/swap">
+			<button>Swap</button>
+			</form>
+		</div>
+		
+			{{#hasThreeOrMoreNumbers}}
+			<div>
+				<form method="post" action="/rotate">
+				<button>Rotate</button>
+				</form>
+			</div>
+			{{/hasThreeOrMoreNumbers}}
+		
 		{{/hasTwoOrMoreNumbers}}
 		<br>
 		{{#hasOneOrMoreNumbers}}
-		<div>
-			<form method="post" action="/abs">
-			<button>Abs</button>
-			</form>
-		</div>
+			<div>
+				<form method="post" action="/abs">
+				<button>Abs</button>
+				</form>
+			</div>
+				
+			<div>
+				<form method="post" action="/clear">
+					<button>Clear</button>
+				</form>
+			</div>
 		{{/hasOneOrMoreNumbers}}
 		<br>
 		
@@ -79,6 +99,8 @@
 			</form>
 		</div>
 		{{/hasRedoer}} 
+	
+	
 		
 	</div>
 

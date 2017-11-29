@@ -5,7 +5,7 @@ import java.util.Stack;
 public class AbsoluterOfOneNumber implements Godoer, Undoer {
 
 	private Stack<Double> stack;
-	private oneArgumentUndoer undoer;
+	private OneArgumentUndoer undoer;
 	
 	public AbsoluterOfOneNumber(Stack<Double> stack) {
 		this.stack = stack;
@@ -15,7 +15,7 @@ public class AbsoluterOfOneNumber implements Godoer, Undoer {
 		double value = stack.pop();
 		double result = Math.abs(value);
 		stack.push(result);
-		undoer = new oneArgumentUndoer(value);
+		undoer = new OneArgumentUndoer(value);
 		
 	}
 

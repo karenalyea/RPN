@@ -2,11 +2,11 @@ package com.lmig.gfc.rpn.models;
 
 import java.util.Stack;
 
-public class oneArgumentUndoer implements Undoer {
+public class OneArgumentUndoer implements Undoer {
 
 		private double first;
 			
-		public oneArgumentUndoer(double first) {
+		public OneArgumentUndoer(double first) {
 			this.first = first;
 		}
 		

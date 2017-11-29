@@ -6,18 +6,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.lmig.gfc.rpn.models.AbsoluterOfOneNumber;
 import com.lmig.gfc.rpn.models.AddNumbers;
+import com.lmig.gfc.rpn.models.ClearStack;
 import com.lmig.gfc.rpn.models.DivideNumbers;
 import com.lmig.gfc.rpn.models.ExponentNumbers;
 import com.lmig.gfc.rpn.models.Godoer;
 import com.lmig.gfc.rpn.models.MinusNumbers;
 import com.lmig.gfc.rpn.models.MultiplyNumbers;
+import com.lmig.gfc.rpn.models.RotateNumbers;
+import com.lmig.gfc.rpn.models.SwapNumbers;
 import com.lmig.gfc.rpn.models.ItDoesThePushing;
 
 
-
+ 
 @Controller
 public class RPNController {
 	
@@ -38,6 +40,7 @@ public class RPNController {
 		mv.addObject("stack", stack);
 		mv.addObject("hasOneOrMoreNumbers", stack.size() >=1);
 		mv.addObject("hasTwoOrMoreNumbers",stack.size() >=2);
+		mv.addObject("hasThreeOrMoreNumbers", stack.size() >=3);
 		mv.addObject("hasUndoer", undoers.size() > 0);
 		mv.addObject("hasRedoer", redoers.size() > 0);
 		mv.setViewName("RPN");
@@ -110,14 +113,36 @@ public class RPNController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/");
 		return mv;
+		
+	}
+	
+	@PostMapping("/swap")	
+	public ModelAndView SwapNumbers() {
+		SwapNumbers swapper = new SwapNumbers(stack);
+		return doOperation(swapper);
+		
+	}
+	
+	@PostMapping("/rotate")	
+	public ModelAndView Rotate() {
+		RotateNumbers rotater = new RotateNumbers(stack);
+		return doOperation(rotater);
+		
+	}
+	
+	@PostMapping("/clear")
+	public ModelAndView Clear() {
+		ClearStack clearer = new ClearStack(stack);
+		return doOperation(clearer);
+		
 	}
 	
 		
-	private ModelAndView doOperation(Godoer calcy) {
+	private ModelAndView doOperation(Godoer operation) {
 		//does both doer and and undoer
-		//calcy know what function it is suppose to do
-		calcy.goDoIt();
-		undoers.push(calcy);
+		//operation know what function it is suppose to do
+		operation.goDoIt();
+		undoers.push(operation);
 		redoers.clear();
 		
 		ModelAndView mv = new ModelAndView();

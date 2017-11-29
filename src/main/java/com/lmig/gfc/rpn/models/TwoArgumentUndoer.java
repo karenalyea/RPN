@@ -3,7 +3,7 @@ package com.lmig.gfc.rpn.models;
 import java.util.Stack;
 
 public class TwoArgumentUndoer  
-	extends oneArgumentUndoer {
+	extends OneArgumentUndoer {
 //don't need to add implement since we are a child of OAU
 
 	private double second;
