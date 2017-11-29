@@ -9,45 +9,46 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AddNumbersTest {
+public class SwapNumbersTest {
 
 	private Stack<Double> stack;
-	private AddNumbers adder;
-
+	private SwapNumbers swapper;
+	
 	@Before
 	public void setUp() {
 		stack = new Stack<Double>();
-		adder = new AddNumbers(stack);
+		swapper = new SwapNumbers(stack);
 	}
-
+	
 	@Test
-	public void goDoIT_adds_and_pushes_to_stack() {
+	public void goDoIT_swaps_the_most_recent_with_the_next_most_recent_and_pushes_to_stack() {
 		// Arrange
-		stack.push(234.0);
-		stack.push(-2.0);
+		stack.push(50.0);
+		stack.push(25.0);
 
 		// Act
-		adder.goDoIt();
+		swapper.goDoIt();
 
 		// Assert
-		assertThat(stack).hasSize(1);
-		assertThat(stack.peek()).isEqualTo(232.0);
+		assertThat(stack).hasSize(2);
+		assertThat(stack.pop()).isEqualTo(50.0);
+		assertThat(stack.pop()).isEqualTo(25.0);
 	}
 
 	@Test
 	public void undo_returns_the_stack_to_the_previous_state() {
 		// Arrange
-		stack.push(234.0);
-		stack.push(-2.0);
-		adder.goDoIt();
+		stack.push(50.0);
+		stack.push(25.0);
+		swapper.goDoIt();
 
 		// Act
-		adder.undo(stack);
+		swapper.undo(stack);
 
 		// Assert
 		assertThat(stack).hasSize(2);
-		assertThat(stack.pop()).isEqualTo(-2.0);
-		assertThat(stack.pop()).isEqualTo(234.0);
+		assertThat(stack.pop()).isEqualTo(25.0);
+		assertThat(stack.pop()).isEqualTo(50.0);
 	}
 
 	@Test
@@ -57,7 +58,7 @@ public class AddNumbersTest {
 
 		try {
 			// Act
-			adder.goDoIt();
+			swapper.goDoIt();
 
 			// Assert
 			fail("Did not throw an EmptyStackException");
@@ -69,16 +70,17 @@ public class AddNumbersTest {
 	public void null_stack_causes_NullPointerException_in_goDoIt() {
 
 		// Arrange (has to override original set up)
-		adder = new AddNumbers(null);
+		swapper = new SwapNumbers(null);
 
 		try {
 
 			// Act
-			adder.goDoIt();
+			swapper.goDoIt();
 
 			// Assert
 			fail("Somehow this did not throw a NPE.");
 		} catch (NullPointerException npe) {
 		}
 	}
+	
 }

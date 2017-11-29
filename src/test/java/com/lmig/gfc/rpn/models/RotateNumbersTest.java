@@ -9,45 +9,56 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AddNumbersTest {
+public class RotateNumbersTest {
 
 	private Stack<Double> stack;
-	private AddNumbers adder;
-
+	private RotateNumbers rotater;
+	
 	@Before
 	public void setUp() {
 		stack = new Stack<Double>();
-		adder = new AddNumbers(stack);
+		rotater = new RotateNumbers(stack);
 	}
-
+	
 	@Test
-	public void goDoIT_adds_and_pushes_to_stack() {
+	public void goDoIT_swaps_the_3_most_recent_and_pushes_to_stack() {
 		// Arrange
-		stack.push(234.0);
-		stack.push(-2.0);
+		stack.push(1.0);
+		stack.push(2.0);
+		stack.push(3.0);
+		stack.push(4.0);
+		stack.push(5.0);
+		stack.push(6.0);
 
 		// Act
-		adder.goDoIt();
+		rotater.goDoIt();
 
 		// Assert
-		assertThat(stack).hasSize(1);
-		assertThat(stack.peek()).isEqualTo(232.0);
+		assertThat(stack).hasSize(6);
+		assertThat(stack.pop()).isEqualTo(4.0);
+		assertThat(stack.pop()).isEqualTo(6.0);
+		assertThat(stack.pop()).isEqualTo(5.0);
 	}
 
 	@Test
 	public void undo_returns_the_stack_to_the_previous_state() {
 		// Arrange
-		stack.push(234.0);
-		stack.push(-2.0);
-		adder.goDoIt();
+		stack.push(1.0);
+		stack.push(2.0);
+		stack.push(3.0);
+		stack.push(4.0);
+		stack.push(5.0);
+		stack.push(6.0);
+		rotater.goDoIt();
 
 		// Act
-		adder.undo(stack);
+		rotater.undo(stack);
 
 		// Assert
-		assertThat(stack).hasSize(2);
-		assertThat(stack.pop()).isEqualTo(-2.0);
-		assertThat(stack.pop()).isEqualTo(234.0);
+		assertThat(stack).hasSize(6);
+		assertThat(stack.pop()).isEqualTo(6.0);
+		assertThat(stack.pop()).isEqualTo(5.0);
+		assertThat(stack.pop()).isEqualTo(4.0);
 	}
 
 	@Test
@@ -57,7 +68,7 @@ public class AddNumbersTest {
 
 		try {
 			// Act
-			adder.goDoIt();
+			rotater.goDoIt();
 
 			// Assert
 			fail("Did not throw an EmptyStackException");
@@ -69,16 +80,17 @@ public class AddNumbersTest {
 	public void null_stack_causes_NullPointerException_in_goDoIt() {
 
 		// Arrange (has to override original set up)
-		adder = new AddNumbers(null);
+		rotater = new RotateNumbers(null);
 
 		try {
 
 			// Act
-			adder.goDoIt();
+			rotater.goDoIt();
 
 			// Assert
 			fail("Somehow this did not throw a NPE.");
 		} catch (NullPointerException npe) {
 		}
 	}
+	
 }
